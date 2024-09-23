@@ -1,19 +1,21 @@
 terraform {
-  required_version = ">= 0.12"
+  required_version = ">= 0.13"
   required_providers {
+
     google = {
       source  = "hashicorp/google"
-      version = "6.3.0"
+      version = "5.44.0"
     }
   }
+
   backend "gcs" {
-    bucket = "docto-design-system"
+    bucket = "docto-design-system-4"
     prefix    = "state/terraform.tfstate"
   }
 }
 
 # Configure the GCP Provider
 provider "google" {
-  project     = var.gcp_project
+  project     = var.data_ingestion_project_id
   region      = var.gcp_region
 }

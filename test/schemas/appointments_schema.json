@@ -1,0 +1,45 @@
+{ "BigQuery Schema": [ 
+  {
+    "name": "patient_id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "appointment_date",
+    "type": "DATE",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "status",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "feedback",
+    "type": "RECORD",
+    "mode": "NULLABLE",
+    "fields": [
+      {
+        "name": "rating",
+        "type": "INTEGER",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "comments",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      }
+    ]
+  },
+  {
+    "name": "cancellation_reason",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "postponement_reason",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  }
+  ] 
+}

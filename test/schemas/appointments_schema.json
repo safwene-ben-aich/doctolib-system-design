@@ -5,6 +5,16 @@
     "mode": "REQUIRED"
   },
   {
+    "name": "first_name",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "last_name",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
     "name": "appointment_date",
     "type": "DATE",
     "mode": "REQUIRED"

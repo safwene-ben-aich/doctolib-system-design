@@ -1,57 +1,30 @@
-# Marketplace Infrastructure as Code (IaC)
-This repository contains Terraform configurations that can be used to deploy the infrastructure of the system design data lake.
+# Doctolib System Design - Terraform Infrastructure
+
+This repository contains the **Terraform** configuration files to provision and manage the infrastructure for the system design assesment, an online healthcare appointment platform.
+
+## Table of Contents
+- [Doctolib System Design - Terraform Infrastructure](#doctolib-system-design---terraform-infrastructure)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Architecture](#architecture)
+  - [Prerequisites](#prerequisites)
 
 
-<!-- BEGIN_TF_DOCS -->
 
+## Overview
+This project uses Terraform to provision cloud infrastructure for the Doctolib system design. The setup includes services such as:
+- Google cloud storage
+- Google Dataflow
+- Google Bigquery
+  
+## Architecture
+The infrastructure is designed to handle both frontend (patient and doctor dashboards) and backend services (appointment management, notifications, etc.).
+
+![Architecture Diagram](diagrams/doctolib-system-desing.drawio.png)
 
 
 ## Prerequisites
-Make sure you have installed all of the following prerequisites on your development machine:
-
-* Git - [Download & Install Git](https://git-scm.com/downloads). OSX and Linux machines typically have this already installed.
- * [Terraform](https://www.terraform.io/downloads.html) >= 1.4.6.
-* The [Gcloud CLI](https://cloud.google.com/sdk/gcloud#download_and_install_the) installed.
-
-* Your GCP credentials are [configured](https://cloud.google.com/sdk/gcloud/reference/auth/login) locally.
-
-
-## Configuring your Terraform backend
-
-Make sure you have created and configured your backend if you are using the remote state mechanism.
-
-```
-terraform {
-  required_version = ">= 0.12"
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "6.3.0"
-    }
-  }
-  backend "gcs" {
-    bucket = "docto-design-system"
-    prefix    = "state/terraform.tfstate"
-  }
-}
-```
-## Plan your terraform ressources
-
-```
-terraform plan -var sa_key_path="PATH_SA_FILE.json"
-```
-
-## Apply your terraform ressources
-
-```
-terraform apply -var sa_key_path="PATH_SA_FILE.json"
-```
-
-## Destroy your terraform ressources
-
-```
-terraform destroy -var sa_key_path="PATH_SA_FILE.json"
-```
-
-
-<!-- END_TF_DOCS -->
+- **Terraform**: Install Terraform by following the [official guide](https://learn.hashicorp.com/tutorials/terraform/install-cli).
+- **Cloud Provider Account**: You will need a cloud account (e.g., AWS, GCP, or Azure).
+- **Service Account**: Ensure you have access to a service account or credentials for provisioning resources.
+- **SSH Key**: For accessing provisioned virtual machines.

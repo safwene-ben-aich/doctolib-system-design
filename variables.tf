@@ -10,14 +10,8 @@ variable "labels" {
   default     = {}
 }
 
-variable "bucket_name" {
-  description = "The main part of the name of the bucket to be created."
-  type        = string
-}
-
-
-variable "bucket_location" {
-  description = "Bucket location."
+variable "ressource_location" {
+  description = "Ressource location."
   type        = string
   default     = "US"
 }
@@ -34,8 +28,6 @@ variable "delete_contents_on_destroy" {
   type        = bool
   default     = false
 }
-
-
 
 variable "bucket_lifecycle_rules" {
   description = "List of lifecycle rules to configure. Format is the same as described in provider documentation https://www.terraform.io/docs/providers/google/r/storage_bucket.html#lifecycle_rule except condition.matches_storage_class should be a comma delimited string."
@@ -71,9 +63,17 @@ variable "bucket_lifecycle_rules" {
 variable "path_local_DS_data" {
   description = "The path of local data sets for appoitements"
   type        = string
+  default = "data/extended_appointments.ndjson"
 }
 
 variable "path_local_DS_schema" {
   description = "The path of local schemas for appoitements"
   type        = string
+  default = "schemas/appointments_schema.json"
+}
+
+variable "path_local_DS_function" {
+  description = "The path of local schemas for appoitements"
+  type        = string
+  default = "scripts/transform.js"
 }

@@ -9,7 +9,7 @@ terraform {
   }
 
   backend "gcs" {
-    bucket = "docto-design-system-8"
+    bucket = "docto-design-system-9"
     prefix    = "state/terraform.tfstate"
   }
 }
@@ -17,5 +17,5 @@ terraform {
 # Configure the GCP Provider
 provider "google" {
   project     = var.data_ingestion_project_id
-  region      = var.gcp_region
+  region      = var.data_ingestion_project_region
 }

@@ -1,17 +1,11 @@
 # define GCP project name
-variable "gcp_project" {
+variable "data_ingestion_project_id" {
+  description = "The ID of the project in which the data ingestion resources will be created."
   type        = string
-  description = "GCP project name"
 }
 
 # define GCP region
-variable "gcp_region" {
+variable "data_ingestion_project_region" {
   type        = string
-  description = "GCP region"
-}
-
-# define GCP zone name
-variable "gcp_zone" {
-  type        = string
-  description = "GCP project name"
+  description = "project region"
 }

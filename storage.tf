@@ -1,51 +1,68 @@
-/**
- * Copyright 2021 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
 
 resource "random_id" "suffix" {
   byte_length = 4
 }
 
-resource "google_storage_bucket" "data_ingestion_bucket" {
+resource "google_storage_bucket" "appointments_bucket" {
+  name          = "my-dataflow-bucket-${random_id.suffix.hex}"
+  project = var.data_ingestion_project_id
+  location      = var.ressource_location
+  force_destroy = true  # Allow Terraform to delete the bucket if there are objects
 
-  project         = var.data_ingestion_project_id
-  labels          = var.labels
-  name            = "bkt-${var.data_ingestion_project_id}-${var.bucket_name}-${random_id.suffix.hex}"
-  location        = var.bucket_location
-  storage_class   = var.bucket_class
-  
+  versioning {
+    enabled = true
+  }
+
   lifecycle_rule {
-    condition {
-      age = 30
-    }
     action {
       type = "Delete"
     }
+
+    condition {
+      age = 30  # Delete objects after 30 days
+    }
   }
-  force_destroy   = var.delete_contents_on_destroy
 }
 
-//Uploading the CSV file to the GCS bucket 
+resource "google_storage_bucket" "dead_letter_bucket" {
+  name          = "my-dead-letter-bucket-${random_id.suffix.hex}"
+  project = var.data_ingestion_project_id
+  location      = var.ressource_location
+  force_destroy = true  # Allow Terraform to delete the bucket if there are objects
 
-resource "google_storage_bucket_object" "appointments_data" {
-  name   = "appointments.csv"
-  bucket = google_storage_bucket.data_ingestion_bucket.name
-  source = var.path_local_DS_data
+  versioning {
+    enabled = true
+  }
+
+  lifecycle_rule {
+    action {
+      type = "Delete"
+    }
+
+    condition {
+      age = 30  # Delete objects after 30 days
+    }
+  }
 }
+
+
+# Upload the appointments NDJSON file to the 'data' folder in the bucket
+resource "google_storage_bucket_object" "appointments_ndjson" {
+  name   = "data/appointments.ndjson"
+  bucket = google_storage_bucket.appointments_bucket.name
+  source = "data/extended_appointments.ndjson"  # Replace with your local path
+}
+
+# Upload the schema JSON file to the 'schemas' folder in the bucket
 resource "google_storage_bucket_object" "appointments_schema" {
-  name   = "appointments.json"
-  bucket = google_storage_bucket.data_ingestion_bucket.name
-  source = var.path_local_DS_schema
+  name   = "schemas/appointments_schema.json"
+  bucket = google_storage_bucket.appointments_bucket.name
+  source = "schemas/appointments_schema.json"  # Replace with your local path
+}
+
+resource "google_storage_bucket_object" "transform_js" {
+  name   = "scripts/transform.js"  # Path where the JS file will be stored in GCS
+  bucket = google_storage_bucket.appointments_bucket.name
+  source = "scripts/transform.js"  # Path to your local JS file
 }

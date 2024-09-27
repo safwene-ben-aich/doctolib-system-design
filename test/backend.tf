@@ -9,7 +9,7 @@ terraform {
   }
 
   backend "gcs" {
-    bucket = "docto-design-system-9"
+    bucket = "docto-design-system-10"
     prefix    = "state/terraform.tfstate"
   }
 }

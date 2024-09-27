@@ -25,28 +25,6 @@ resource "google_storage_bucket" "appointments_bucket" {
   }
 }
 
-resource "google_storage_bucket" "dead_letter_bucket" {
-  name          = "my-dead-letter-bucket-${random_id.suffix.hex}"
-  project = var.data_ingestion_project_id
-  location      = var.ressource_location
-  force_destroy = true  # Allow Terraform to delete the bucket if there are objects
-
-  versioning {
-    enabled = true
-  }
-
-  lifecycle_rule {
-    action {
-      type = "Delete"
-    }
-
-    condition {
-      age = 30  # Delete objects after 30 days
-    }
-  }
-}
-
-
 # Upload the appointments NDJSON file to the 'data' folder in the bucket
 resource "google_storage_bucket_object" "appointments_ndjson" {
   name   = "data/appointments.ndjson"
